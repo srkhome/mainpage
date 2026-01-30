@@ -61,7 +61,7 @@
                     <input type="date" id="post_date" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
                 </div>
                 <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-400">房屋所有權人</label>
+                    <label class="text-xs font-bold text-slate-400">房屋所有權人 (不對外顯示)</label>
                     <input type="text" id="owner" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
                 </div>
                 <div class="space-y-1 md:col-span-3">
@@ -112,9 +112,9 @@
                 <thead class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest">
                     <tr>
                         <th class="p-4">刊登日期</th>
-                        <th class="p-4">業務</th>
-                        <th class="p-4">地址</th>
-                        <th class="p-4">資訊</th>
+                        <th class="p-4">業務人員</th>
+                        <th class="p-4">房屋地址</th>
+                        <th class="p-4">型態/房型</th>
                         <th class="p-4 text-right">月租金總計</th>
                         <th class="p-4 text-center">操作</th>
                     </tr>
@@ -156,7 +156,7 @@
             const newItem = {
                 agent: document.getElementById('agent').value,
                 post_date: document.getElementById('post_date').value,
-                owner: document.getElementById('owner').value,
+                owner: document.getElementById('owner').value, // 儲存於資料庫，但不顯示
                 address: document.getElementById('address').value,
                 rent: Number(document.getElementById('rent').value),
                 manage_fee: Number(document.getElementById('manage_fee').value),
@@ -225,8 +225,7 @@
                                                 <span class="bg-slate-100 text-slate-500 px-2 py-0.5 rounded">刊登：${item.post_date}</span>
                                                 <span class="bg-blue-50 text-blue-500 px-2 py-0.5 rounded">${item.build_type}</span>
                                                 <span class="bg-indigo-50 text-indigo-500 px-2 py-0.5 rounded">${item.room_type}</span>
-                                                <span class="bg-slate-100 text-slate-400 px-2 py-0.5 rounded">屋主：${item.owner}</span>
-                                            </div>
+                                                </div>
                                         </div>
                                         <div class="flex items-center justify-between md:justify-end md:space-x-8">
                                             <div class="text-left md:text-right">
