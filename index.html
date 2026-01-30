@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>總管家管理系統 - 宜仁居家技術支援</title>
+    <title>總管家管理系統 - 管理員進階版</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
@@ -21,111 +21,67 @@
     </nav>
 
     <div id="login-page" class="flex items-center justify-center min-h-screen bg-slate-900">
-        <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md border-t-8 border-blue-600">
-            <h1 class="text-3xl font-black text-center text-slate-800 mb-2">總管家</h1>
-            <p class="text-center text-slate-500 text-sm mb-8 font-medium">房屋資訊管理系統</p>
+        <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md">
+            <h1 class="text-3xl font-black text-center text-slate-800 mb-8">總管家登入</h1>
             <div class="space-y-5">
-                <input type="text" id="username" placeholder="帳號" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50">
-                <input type="password" id="password" placeholder="密碼" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50">
-                <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg text-lg">登入系統</button>
+                <input type="text" id="username" placeholder="帳號" class="w-full border-2 p-3 rounded-xl outline-none">
+                <input type="password" id="password" placeholder="密碼" class="w-full border-2 p-3 rounded-xl outline-none">
+                <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold">進入系統</button>
             </div>
         </div>
     </div>
 
-    <div id="main-dashboard" class="hidden max-w-6xl mx-auto p-4 md:p-6">
+    <div id="main-dashboard" class="hidden max-w-6xl mx-auto p-6">
         
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8 text-center">
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-                <p class="text-slate-400 text-xs font-bold mb-1">案件總數</p>
-                <p class="text-3xl font-black text-blue-600" id="stat-total">0</p>
-            </div>
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100">
-                <p class="text-slate-400 text-xs font-bold mb-1">已出租</p>
-                <p class="text-3xl font-black text-green-600" id="stat-done">0</p>
-            </div>
-            <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-100 col-span-2 md:col-span-1">
-                <p class="text-slate-400 text-xs font-bold mb-1">招租中</p>
-                <p class="text-3xl font-black text-orange-500" id="stat-pending">0</p>
-            </div>
-        </div>
-
-        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-100 mb-12">
-            <h2 class="text-lg font-black mb-6 flex items-center text-slate-800"><span class="w-1.5 h-6 bg-blue-600 mr-3 rounded-full"></span>新增房屋案件</h2>
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 mb-12">
+            <h2 id="form-title" class="text-lg font-black mb-6 flex items-center text-slate-800"><span class="w-1.5 h-6 bg-blue-600 mr-3 rounded-full"></span>新增房屋案件</h2>
             <form id="house-form" class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-400">業務人員</label>
-                    <input type="text" id="agent" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
-                </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-400">刊登日期</label>
-                    <input type="date" id="post_date" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
-                </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-400">房屋所有權人 (不對外顯示)</label>
-                    <input type="text" id="owner" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
-                </div>
-                <div class="space-y-1 md:col-span-3">
-                    <label class="text-xs font-bold text-slate-400">房屋地址</label>
-                    <input type="text" id="address" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
-                </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-400">月租金</label>
-                    <input type="number" id="rent" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
-                </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-400">管理月費</label>
-                    <input type="number" id="manage_fee" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" value="0">
-                </div>
-                <div class="space-y-1">
-                    <label class="text-xs font-bold text-slate-400">車位月租金</label>
-                    <input type="number" id="parking_fee" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" value="0">
-                </div>
+                <input type="hidden" id="edit-id">
+                <div class="space-y-1"><label class="text-xs font-bold text-slate-400">業務人員</label><input type="text" id="agent" class="w-full border-2 p-3 rounded-xl outline-none" required></div>
+                <div class="space-y-1"><label class="text-xs font-bold text-slate-400">刊登日期</label><input type="date" id="post_date" class="w-full border-2 p-3 rounded-xl outline-none" required></div>
+                <div class="space-y-1"><label class="text-xs font-bold text-slate-400">房屋所有權人</label><input type="text" id="owner" class="w-full border-2 p-3 rounded-xl outline-none" required></div>
+                <div class="space-y-1 md:col-span-3"><label class="text-xs font-bold text-slate-400">房屋地址</label><input type="text" id="address" class="w-full border-2 p-3 rounded-xl outline-none" required></div>
+                <div class="space-y-1"><label class="text-xs font-bold text-slate-400">月租金</label><input type="number" id="rent" class="w-full border-2 p-3 rounded-xl outline-none" required></div>
+                <div class="space-y-1"><label class="text-xs font-bold text-slate-400">管理月費</label><input type="number" id="manage_fee" class="w-full border-2 p-3 rounded-xl outline-none" value="0"></div>
+                <div class="space-y-1"><label class="text-xs font-bold text-slate-400">車位月租金</label><input type="number" id="parking_fee" class="w-full border-2 p-3 rounded-xl outline-none" value="0"></div>
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-slate-400">房型</label>
-                    <select id="room_type" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none bg-slate-50">
+                    <select id="room_type" class="w-full border-2 p-3 rounded-xl outline-none bg-slate-50">
                         <option>套房</option><option>兩房</option><option>三房</option><option>四房以上</option>
                     </select>
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-slate-400">建物型態</label>
-                    <select id="build_type" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none bg-slate-50">
+                    <select id="build_type" class="w-full border-2 p-3 rounded-xl outline-none bg-slate-50">
                         <option>透天</option><option>公寓</option><option>華厦</option><option>電梯大樓</option>
                     </select>
                 </div>
                 <div class="space-y-1">
                     <label class="text-xs font-bold text-slate-400">案件進度</label>
-                    <select id="status" class="w-full border-2 border-blue-200 p-3 rounded-xl outline-none bg-blue-50 font-bold text-blue-700">
-                        <option value="招租中">招租中</option>
-                        <option value="已出租">已出租</option>
+                    <select id="status" class="w-full border-2 p-3 rounded-xl outline-none bg-blue-50 font-bold text-blue-700">
+                        <option value="招租中">招租中</option><option value="已出租">已出租</option>
                     </select>
                 </div>
-                <button type="submit" class="md:col-span-3 bg-blue-700 text-white font-black py-4 rounded-xl hover:bg-blue-800 transition shadow-lg mt-2">確認提交案件並同步雲端</button>
+                <div class="md:col-span-3 flex gap-3">
+                    <button type="submit" id="submit-btn" class="flex-1 bg-blue-700 text-white font-black py-4 rounded-xl hover:bg-blue-800 transition shadow-lg">提交案件</button>
+                    <button type="button" id="cancel-edit" class="hidden bg-slate-200 text-slate-600 font-bold px-6 py-4 rounded-xl hover:bg-slate-300 transition">取消修改</button>
+                </div>
             </form>
         </div>
 
-        <h3 class="text-xl font-black mb-6 text-orange-600 flex items-center">🕒 招租中物件 (依業務歸類)</h3>
+        <h3 class="text-xl font-black mb-6 text-orange-600">🕒 招租中物件</h3>
         <div id="active-list" class="space-y-8 mb-16"></div>
 
-        <h3 class="text-xl font-black mb-6 text-green-700 flex items-center">✅ 已成功出租物件</h3>
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-x-auto">
+        <h3 class="text-xl font-black mb-6 text-green-700">✅ 已成功出租物件</h3>
+        <div class="bg-white rounded-2xl shadow-sm border overflow-x-auto">
             <table class="w-full text-left min-w-[800px]">
-                <thead class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest">
-                    <tr>
-                        <th class="p-4">刊登日期</th>
-                        <th class="p-4">業務人員</th>
-                        <th class="p-4">房屋地址</th>
-                        <th class="p-4">型態/房型</th>
-                        <th class="p-4 text-right">月租金總計</th>
-                        <th class="p-4 text-center">操作</th>
-                    </tr>
-                </thead>
                 <tbody id="done-list" class="divide-y divide-slate-100"></tbody>
             </table>
         </div>
     </div>
 
     <script>
-        // Firebase 配置
+        // Firebase Config (name1-f188a)
         const firebaseConfig = {
             apiKey: "AIzaSyB0DqTg1tHiyyvAf4_eXU9Iq80oQwGLnBg",
             authDomain: "name1-f188a.firebaseapp.com",
@@ -137,26 +93,37 @@
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        document.getElementById('post_date').valueAsDate = new Date();
+        let currentUser = null;
 
         function handleLogin() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            if ((user==='ueue31' && pass==='0919821208') || (user==='24928555' && pass==='12345678')) {
-                document.getElementById('login-page').classList.add('hidden');
-                document.getElementById('main-dashboard').classList.remove('hidden');
-                document.getElementById('nav-bar').classList.remove('hidden');
-                document.getElementById('user-display').innerText = `管理人員：${user}`;
-                startRealtimeUpdate();
+            if (user === 'ueue31' && pass === '0919821208') {
+                currentUser = { id: user, role: 'admin' };
+                showApp();
+            } else if (user === '24928555' && pass === '12345678') {
+                currentUser = { id: user, role: 'editor' };
+                showApp();
             }
         }
 
+        function showApp() {
+            document.getElementById('login-page').classList.add('hidden');
+            document.getElementById('main-dashboard').classList.remove('hidden');
+            document.getElementById('nav-bar').classList.remove('hidden');
+            document.getElementById('user-display').innerText = `管理：${currentUser.id} (${currentUser.role === 'admin' ? '系統主管' : '業務同仁'})`;
+            document.getElementById('post_date').valueAsDate = new Date();
+            startRealtimeUpdate();
+        }
+
+        // 提交與更新邏輯
         document.getElementById('house-form').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const newItem = {
+            const editId = document.getElementById('edit-id').value;
+            const data = {
                 agent: document.getElementById('agent').value,
                 post_date: document.getElementById('post_date').value,
-                owner: document.getElementById('owner').value, // 儲存於資料庫，但不顯示
+                owner: document.getElementById('owner').value,
                 address: document.getElementById('address').value,
                 rent: Number(document.getElementById('rent').value),
                 manage_fee: Number(document.getElementById('manage_fee').value),
@@ -164,16 +131,55 @@
                 room_type: document.getElementById('room_type').value,
                 build_type: document.getElementById('build_type').value,
                 status: document.getElementById('status').value,
-                createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                updatedAt: firebase.firestore.FieldValue.serverTimestamp()
             };
-            await db.collection("houses").add(newItem);
-            this.reset();
-            document.getElementById('post_date').valueAsDate = new Date();
+
+            if (editId) {
+                await db.collection("houses").doc(editId).update(data);
+                alert("案件已成功修改！");
+                resetForm();
+            } else {
+                data.createdAt = firebase.firestore.FieldValue.serverTimestamp();
+                await db.collection("houses").add(data);
+                alert("案件已成功新增！");
+                this.reset();
+            }
         });
 
-        async function updateStatus(docId, newStatus) {
-            if (confirm(`確定修改進度為「${newStatus}」？`)) {
-                await db.collection("houses").doc(docId).update({ status: newStatus });
+        // 進入編輯模式
+        function editDoc(id, dataStr) {
+            const data = JSON.parse(decodeURIComponent(dataStr));
+            document.getElementById('form-title').innerText = "📝 正在編輯案件";
+            document.getElementById('edit-id').value = id;
+            document.getElementById('agent').value = data.agent;
+            document.getElementById('post_date').value = data.post_date;
+            document.getElementById('owner').value = data.owner;
+            document.getElementById('address').value = data.address;
+            document.getElementById('rent').value = data.rent;
+            document.getElementById('manage_fee').value = data.manage_fee;
+            document.getElementById('parking_fee').value = data.parking_fee;
+            document.getElementById('room_type').value = data.room_type;
+            document.getElementById('build_type').value = data.build_type;
+            document.getElementById('status').value = data.status;
+            document.getElementById('submit-btn').innerText = "確認儲存修改";
+            document.getElementById('cancel-edit').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function resetForm() {
+            document.getElementById('house-form').reset();
+            document.getElementById('edit-id').value = "";
+            document.getElementById('form-title').innerText = "新增房屋案件";
+            document.getElementById('submit-btn').innerText = "提交案件";
+            document.getElementById('cancel-edit').classList.add('hidden');
+        }
+
+        document.getElementById('cancel-edit').onclick = resetForm;
+
+        // 刪除功能 (管理員專屬)
+        async function deleteDoc(id) {
+            if (confirm("⚠️ 注意：刪除後資料無法找回，確定刪除嗎？")) {
+                await db.collection("houses").doc(id).delete();
             }
         }
 
@@ -184,28 +190,32 @@
                 activeArea.innerHTML = '';
                 doneList.innerHTML = '';
                 
-                let stats = { total: snapshot.size, done: 0 };
                 let groupedActive = {};
 
                 snapshot.forEach(doc => {
                     const data = doc.data();
                     const id = doc.id;
+                    const dataStr = encodeURIComponent(JSON.stringify(data));
                     const totalMoney = data.rent + data.manage_fee + data.parking_fee;
 
+                    // 管理員按鈕組
+                    const adminButtons = currentUser.role === 'admin' ? `
+                        <button onclick="editDoc('${id}', '${dataStr}')" class="text-xs bg-slate-800 text-white px-3 py-2 rounded-lg font-bold">修改資料</button>
+                        <button onclick="deleteDoc('${id}')" class="text-xs text-red-500 hover:underline">刪除案件</button>
+                    ` : '';
+
                     if (data.status === '已出租') {
-                        stats.done++;
                         doneList.innerHTML += `
                             <tr class="text-sm">
                                 <td class="p-4 text-slate-400 font-mono text-xs">${data.post_date}</td>
-                                <td class="p-4 font-bold text-slate-600">${data.agent}</td>
+                                <td class="p-4 font-bold text-slate-600">${data.agent} ${currentUser.role === 'admin' ? `<br><span class='text-[10px] text-blue-500'>屋主：${data.owner}</span>` : ''}</td>
                                 <td class="p-4 text-slate-500">${data.address}</td>
-                                <td class="p-4 text-[10px] text-slate-400 font-bold">${data.build_type} / ${data.room_type}</td>
                                 <td class="p-4 text-right font-black text-slate-400">$${totalMoney.toLocaleString()}</td>
-                                <td class="p-4 text-center"><button onclick="updateStatus('${id}', '招租中')" class="text-xs bg-blue-50 text-blue-600 px-2 py-1 rounded-md">回復招租</button></td>
+                                <td class="p-4 text-center space-x-2">${adminButtons}</td>
                             </tr>`;
                     } else {
                         if (!groupedActive[data.agent]) groupedActive[data.agent] = [];
-                        groupedActive[data.agent].push({id, totalMoney, ...data});
+                        groupedActive[data.agent].push({id, dataStr, totalMoney, ...data});
                     }
                 });
 
@@ -213,26 +223,23 @@
                     let agentCard = `
                         <div class="bg-white rounded-2xl shadow-sm border border-blue-100 overflow-hidden">
                             <div class="bg-blue-600 px-6 py-4 flex justify-between items-center text-white">
-                                <span class="font-black text-lg">業務人員：${agent}</span>
-                                <span class="text-xs bg-blue-800 px-3 py-1 rounded-full font-bold">${groupedActive[agent].length} 件招租中</span>
+                                <span class="font-black">業務：${agent}</span>
                             </div>
                             <div class="divide-y divide-slate-100">
                                 ${groupedActive[agent].map(item => `
-                                    <div class="p-6 hover:bg-slate-50 flex flex-col md:flex-row justify-between md:items-center gap-4 transition">
+                                    <div class="p-6 hover:bg-slate-50 flex flex-col md:flex-row justify-between md:items-center gap-4">
                                         <div class="space-y-1">
                                             <p class="font-black text-slate-800 text-xl tracking-tight">${item.address}</p>
-                                            <div class="flex flex-wrap gap-2 text-[10px] font-bold uppercase">
-                                                <span class="bg-slate-100 text-slate-500 px-2 py-0.5 rounded">刊登：${item.post_date}</span>
-                                                <span class="bg-blue-50 text-blue-500 px-2 py-0.5 rounded">${item.build_type}</span>
-                                                <span class="bg-indigo-50 text-indigo-500 px-2 py-0.5 rounded">${item.room_type}</span>
-                                                </div>
-                                        </div>
-                                        <div class="flex items-center justify-between md:justify-end md:space-x-8">
-                                            <div class="text-left md:text-right">
-                                                <p class="text-blue-700 font-black text-2xl">$${item.totalMoney.toLocaleString()}</p>
-                                                <p class="text-[10px] text-slate-400 font-bold">租${item.rent.toLocaleString()} / 管${item.manage_fee.toLocaleString()} / 車${item.parking_fee.toLocaleString()}</p>
+                                            <div class="flex flex-wrap gap-2 text-[10px] font-bold">
+                                                <span class="bg-blue-50 text-blue-500 px-2 py-0.5 rounded uppercase">刊登：${item.post_date}</span>
+                                                ${currentUser.role === 'admin' ? `<span class="bg-green-50 text-green-600 px-2 py-0.5 rounded font-black italic">屋主：${item.owner}</span>` : ''}
                                             </div>
-                                            <button onclick="updateStatus('${item.id}', '已出租')" class="bg-green-600 text-white px-6 py-3 rounded-xl font-bold text-sm hover:bg-green-700 shadow-md transition transform active:scale-95">點擊出租</button>
+                                        </div>
+                                        <div class="flex items-center space-x-6">
+                                            <div class="text-right">
+                                                <p class="text-blue-700 font-black text-2xl">$${item.totalMoney.toLocaleString()}</p>
+                                                <div class="flex items-center space-x-2 mt-2">${currentUser.role === 'admin' ? `<button onclick="editDoc('${item.id}', '${item.dataStr}')" class="text-xs bg-slate-800 text-white px-3 py-1.5 rounded-md font-bold hover:bg-black transition">修改資料</button><button onclick="deleteDoc('${item.id}')" class="text-[10px] text-red-500 font-bold hover:underline">刪除</button>` : `<button onclick="updateStatus('${item.id}', '已出租')" class="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm">出租</button>`}</div>
+                                            </div>
                                         </div>
                                     </div>
                                 `).join('')}
@@ -240,9 +247,6 @@
                         </div>`;
                     activeArea.innerHTML += agentCard;
                 }
-                document.getElementById('stat-total').innerText = stats.total;
-                document.getElementById('stat-done').innerText = stats.done;
-                document.getElementById('stat-pending').innerText = stats.total - stats.done;
             });
         }
     </script>
