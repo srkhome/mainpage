@@ -10,98 +10,82 @@
 </head>
 <body class="bg-slate-50 min-h-screen">
 
+    <nav id="nav-bar" class="hidden bg-white border-b p-4 flex justify-between items-center px-8 shadow-sm sticky top-0 z-50">
+        <div class="flex items-center space-x-3">
+            <span class="text-xl font-black text-blue-700">總管家包租代管</span>
+        </div>
+        <div class="flex items-center space-x-4">
+            <span id="user-display" class="text-slate-600 font-bold bg-slate-100 px-4 py-1.5 rounded-full text-sm"></span>
+            <button onclick="location.reload()" class="text-slate-400 hover:text-red-500 text-sm font-black transition">登出</button>
+        </div>
+    </nav>
+
     <div id="login-page" class="flex items-center justify-center min-h-screen bg-slate-900">
         <div class="bg-white p-10 rounded-2xl shadow-2xl w-full max-w-md border-t-8 border-blue-600">
             <h1 class="text-3xl font-black text-center text-slate-800 mb-2">總管家</h1>
-            <p class="text-center text-slate-500 text-sm mb-8 font-medium">房屋資訊管理系統 (內部專用)</p>
+            <p class="text-center text-slate-500 text-sm mb-8">房屋資訊管理系統</p>
             <div class="space-y-5">
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-1">登入帳號</label>
-                    <input type="text" id="username" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 transition">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-400 mb-1">安全密碼</label>
-                    <input type="password" id="password" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50 transition">
-                </div>
+                <input type="text" id="username" placeholder="帳號" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50">
+                <input type="password" id="password" placeholder="密碼" class="w-full border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 bg-slate-50">
                 <button onclick="handleLogin()" class="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg text-lg">登入系統</button>
-                <p id="login-error" class="text-red-500 text-sm text-center hidden font-bold">❌ 帳號或密碼輸入錯誤</p>
-            </div>
-            <div class="mt-8 pt-6 border-t border-slate-100 text-center">
-                <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Powered by 宜仁居家有限公司</p>
             </div>
         </div>
     </div>
 
-    <div id="main-dashboard" class="hidden">
-        <nav class="bg-white border-b p-4 flex justify-between items-center px-8 shadow-sm sticky top-0 z-50">
-            <div class="flex items-center space-x-3">
-                <span class="text-xl font-black text-blue-700">總管家包租代管</span>
+    <div id="main-dashboard" class="hidden max-w-6xl mx-auto p-6">
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-center">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <p class="text-slate-400 text-xs font-bold mb-1 uppercase">案件總數</p>
+                <p class="text-4xl font-black text-blue-600" id="stat-total">0</p>
             </div>
-            <div class="flex items-center space-x-4">
-                <span id="user-display" class="text-slate-600 font-bold bg-slate-100 px-4 py-1.5 rounded-full text-sm"></span>
-                <button onclick="location.reload()" class="text-slate-400 hover:text-red-500 text-sm font-black transition">登出</button>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <p class="text-slate-400 text-xs font-bold mb-1 uppercase">已結案(出租)</p>
+                <p class="text-4xl font-black text-green-600" id="stat-done">0</p>
             </div>
-        </nav>
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <p class="text-slate-400 text-xs font-bold mb-1 uppercase">開發中待租</p>
+                <p class="text-4xl font-black text-orange-500" id="stat-pending">0</p>
+            </div>
+        </div>
 
-        <div class="max-w-6xl mx-auto p-6">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
-                    <p class="text-slate-400 text-xs font-bold mb-1">物件總數</p>
-                    <p class="text-4xl font-black text-blue-600" id="stat-total">0</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
-                    <p class="text-slate-400 text-xs font-bold mb-1">已成交</p>
-                    <p class="text-4xl font-black text-green-600" id="stat-done">0</p>
-                </div>
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 text-center">
-                    <p class="text-slate-400 text-xs font-bold mb-1">待租中</p>
-                    <p class="text-4xl font-black text-orange-500" id="stat-pending">0</p>
-                </div>
-            </div>
+        <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 mb-12">
+            <h2 class="text-lg font-black mb-6 flex items-center text-slate-800"><span class="w-1.5 h-6 bg-blue-600 mr-3 rounded-full"></span>新進案件登記</h2>
+            <form id="house-form" class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                <input type="text" id="agent" placeholder="業務人員" class="border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
+                <input type="date" id="post_date" class="border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
+                <input type="text" id="address" placeholder="房屋地址" class="border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 md:col-span-1" required>
+                <input type="number" id="rent" placeholder="月租金" class="border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
+                <select id="status" class="border-2 border-blue-200 p-3 rounded-xl outline-none bg-blue-50 font-bold text-blue-700">
+                    <option value="待租">狀態：待租</option>
+                    <option value="已成交">狀態：已成交 (結案)</option>
+                </select>
+                <button type="submit" class="md:col-span-3 bg-blue-700 text-white font-bold py-4 rounded-xl hover:bg-blue-800 transition shadow-lg">提交案件</button>
+            </form>
+        </div>
 
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-100 mb-8">
-                <h2 class="text-lg font-black mb-6 flex items-center text-slate-800"><span class="w-1.5 h-6 bg-blue-600 mr-3 rounded-full"></span>房屋案件登記</h2>
-                <form id="house-form" class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <input type="text" id="agent" placeholder="業務人員名稱" class="border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
-                    <input type="text" id="owner" placeholder="房屋所有權人" class="border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
-                    <input type="text" id="address" placeholder="完整房屋地址" class="border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500 md:col-span-1" required>
-                    <input type="number" id="rent" placeholder="月租金 (元)" class="border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500" required>
-                    <input type="number" id="manage_fee" placeholder="管理月費 (元)" class="border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500">
-                    <input type="number" id="parking_fee" placeholder="車位租金 (元)" class="border-2 border-slate-100 p-3 rounded-xl outline-none focus:border-blue-500">
-                    
-                    <select id="room_type" class="border-2 border-slate-100 p-3 rounded-xl outline-none bg-slate-50">
-                        <option>套房</option><option>兩房</option><option>三房</option><option>四房以上</option>
-                    </select>
-                    <select id="build_type" class="border-2 border-slate-100 p-3 rounded-xl outline-none bg-slate-50">
-                        <option>透天</option><option>公寓</option><option>華厦</option><option>電梯大樓</option>
-                    </select>
-                    <select id="status" class="border-2 border-blue-200 p-3 rounded-xl outline-none bg-blue-50 font-bold text-blue-700">
-                        <option value="待租">案件狀態：待租</option>
-                        <option value="已成交">案件狀態：已成交</option>
-                    </select>
-                    <button type="submit" class="md:col-span-3 bg-blue-700 text-white font-bold py-4 rounded-xl hover:bg-blue-800 transition shadow-lg transform active:scale-95">提交並同步至雲端資料庫</button>
-                </form>
-            </div>
+        <h3 class="text-xl font-black mb-4 text-orange-600 flex items-center">🕒 目前待租物件 (依業務分類)</h3>
+        <div id="active-list" class="space-y-6 mb-16"></div>
 
-            <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
-                <table class="w-full text-left">
-                    <thead class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest">
-                        <tr>
-                            <th class="p-5">狀態</th>
-                            <th class="p-5">業務</th>
-                            <th class="p-5">地址</th>
-                            <th class="p-5 text-right">月租金</th>
-                            <th class="p-5">物件資訊</th>
-                        </tr>
-                    </thead>
-                    <tbody id="data-list" class="divide-y divide-slate-100"></tbody>
-                </table>
-            </div>
+        <h3 class="text-xl font-black mb-4 text-green-700 flex items-center">✅ 已成功出租物件</h3>
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-100 overflow-hidden">
+            <table class="w-full text-left">
+                <thead class="bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest">
+                    <tr>
+                        <th class="p-4">結案日期</th>
+                        <th class="p-4">業務</th>
+                        <th class="p-4">地址</th>
+                        <th class="p-4 text-right">月租金</th>
+                        <th class="p-4">操作</th>
+                    </tr>
+                </thead>
+                <tbody id="done-list" class="divide-y divide-slate-100"></tbody>
+            </table>
         </div>
     </div>
 
     <script>
-        // Firebase 設定 (使用 name1-f188a 專案金鑰)
+        // Firebase 配置 (name1-f188a)
         const firebaseConfig = {
             apiKey: "AIzaSyB0DqTg1tHiyyvAf4_eXU9Iq80oQwGLnBg",
             authDomain: "name1-f188a.firebaseapp.com",
@@ -110,84 +94,107 @@
             messagingSenderId: "232467406209",
             appId: "1:232467406209:web:3f0aabbde3b99829f29c80"
         };
-
         firebase.initializeApp(firebaseConfig);
         const db = firebase.firestore();
 
-        // 登入權限設定
-        const authData = {
-            "ueue31": { pw: "0919821208", role: "管理員" },
-            "24928555": { pw: "12345678", role: "員工" }
-        };
+        document.getElementById('post_date').valueAsDate = new Date();
 
         function handleLogin() {
             const user = document.getElementById('username').value;
             const pass = document.getElementById('password').value;
-            if (authData[user] && authData[user].pw === pass) {
+            if ((user==='ueue31' && pass==='0919821208') || (user==='24928555' && pass==='12345678')) {
                 document.getElementById('login-page').classList.add('hidden');
                 document.getElementById('main-dashboard').classList.remove('hidden');
-                document.getElementById('user-display').innerText = `${authData[user].role}：${user}`;
+                document.getElementById('nav-bar').classList.remove('hidden');
+                document.getElementById('user-display').innerText = `登入者：${user}`;
                 startRealtimeUpdate();
-            } else {
-                document.getElementById('login-error').classList.remove('hidden');
             }
         }
 
-        // 提交資料
         document.getElementById('house-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const newItem = {
                 agent: document.getElementById('agent').value,
-                owner: document.getElementById('owner').value,
+                post_date: document.getElementById('post_date').value,
                 address: document.getElementById('address').value,
                 rent: Number(document.getElementById('rent').value),
-                manage_fee: Number(document.getElementById('manage_fee').value),
-                parking_fee: Number(document.getElementById('parking_fee').value),
-                room_type: document.getElementById('room_type').value,
-                build_type: document.getElementById('build_type').value,
                 status: document.getElementById('status').value,
                 createdAt: firebase.firestore.FieldValue.serverTimestamp()
             };
-            
-            try {
-                await db.collection("houses").add(newItem);
-                alert('案件已登記成功！');
-                this.reset();
-            } catch (err) {
-                alert('錯誤：請檢查 Firestore 規則是否已設為 allow read, write: if true;');
-            }
+            await db.collection("houses").add(newItem);
+            this.reset();
+            document.getElementById('post_date').valueAsDate = new Date();
         });
 
-        // 即時監聽與看板統計
+        // 修改進度功能
+        async function updateStatus(docId, newStatus) {
+            if (confirm(`確定要將此物件狀態修改為「${newStatus}」嗎？`)) {
+                await db.collection("houses").doc(docId).update({
+                    status: newStatus,
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
+        }
+
         function startRealtimeUpdate() {
             db.collection("houses").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
-                const list = document.getElementById('data-list');
-                list.innerHTML = '';
-                let total = snapshot.size;
-                let doneCount = 0;
+                const activeArea = document.getElementById('active-list');
+                const doneList = document.getElementById('done-list');
+                activeArea.innerHTML = '';
+                doneList.innerHTML = '';
+                
+                let stats = { total: snapshot.size, done: 0 };
+                let groupedActive = {};
 
                 snapshot.forEach(doc => {
                     const data = doc.data();
-                    if(data.status === '已成交') doneCount++;
-                    
-                    const row = `
-                        <tr class="hover:bg-slate-50 transition">
-                            <td class="p-5">
-                                <span class="px-2 py-1 rounded text-[10px] font-black ${data.status==='待租'?'bg-orange-100 text-orange-600':'bg-green-100 text-green-600'}">
-                                    ${data.status}
-                                </span>
-                            </td>
-                            <td class="p-5 font-bold text-slate-700 text-sm">${data.agent}</td>
-                            <td class="p-5 text-slate-500 text-sm font-medium">${data.address}</td>
-                            <td class="p-5 font-black text-blue-700 text-right text-base">$${Number(data.rent).toLocaleString()}</td>
-                            <td class="p-5 text-slate-400 text-[10px] font-bold">${data.build_type} / ${data.room_type}</td>
-                        </tr>`;
-                    list.innerHTML += row;
+                    const id = doc.id;
+                    if (data.status === '已成交') {
+                        stats.done++;
+                        doneList.innerHTML += `
+                            <tr class="text-sm bg-slate-50/50">
+                                <td class="p-4 text-slate-400 font-mono">${data.post_date || '-'}</td>
+                                <td class="p-4 font-bold text-slate-600">${data.agent}</td>
+                                <td class="p-4 text-slate-500 italic line-through">${data.address}</td>
+                                <td class="p-4 text-right font-black text-slate-400">$${data.rent.toLocaleString()}</td>
+                                <td class="p-4"><button onclick="updateStatus('${id}', '待租')" class="text-xs text-blue-500 hover:underline">轉回待租</button></td>
+                            </tr>`;
+                    } else {
+                        if (!groupedActive[data.agent]) groupedActive[data.agent] = [];
+                        groupedActive[data.agent].push({id, ...data});
+                    }
                 });
 
-                document.getElementById('stat-total').innerText = total;
-                document.getElementById('stat-done').innerText = doneCount;
-                document.getElementById('stat-pending').innerText = total - doneCount;
+                for (let agent in groupedActive) {
+                    let agentCard = `
+                        <div class="bg-white rounded-2xl shadow-sm border border-blue-100 overflow-hidden">
+                            <div class="bg-blue-600 px-6 py-3 flex justify-between items-center text-white">
+                                <span class="font-black text-base">業務員：${agent}</span>
+                                <span class="text-[10px] bg-blue-800 px-2 py-0.5 rounded font-bold uppercase tracking-widest">${groupedActive[agent].length} 物件中</span>
+                            </div>
+                            <div class="divide-y divide-slate-100">
+                                ${groupedActive[agent].map(item => `
+                                    <div class="p-5 hover:bg-blue-50/30 flex justify-between items-center transition">
+                                        <div class="space-y-1">
+                                            <p class="font-black text-slate-800 text-lg">${item.address}</p>
+                                            <p class="text-[11px] text-slate-400 font-bold uppercase">刊登：${item.post_date}</p>
+                                        </div>
+                                        <div class="flex items-center space-x-6">
+                                            <div class="text-right">
+                                                <p class="text-blue-700 font-black text-xl">$${item.rent.toLocaleString()}</p>
+                                                <span class="text-[10px] text-orange-500 font-black uppercase tracking-widest">待租中</span>
+                                            </div>
+                                            <button onclick="updateStatus('${item.id}', '已成交')" class="bg-green-600 text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-green-700 shadow-md transition transform active:scale-90">一鍵結案</button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>`;
+                    activeArea.innerHTML += agentCard;
+                }
+                document.getElementById('stat-total').innerText = stats.total;
+                document.getElementById('stat-done').innerText = stats.done;
+                document.getElementById('stat-pending').innerText = stats.total - stats.done;
             });
         }
     </script>
